@@ -6,7 +6,7 @@ Process of Testing stage
 Train Data: 1,460(all) 1,220(1Fam)
 Test Data:  1,460(all) 1,205(1Fam)
 
-2. List of All Features
+2. ALL FEATURES LIST
 
 > names(train)
  [1] "MSSubClass"    "MSZoning"      "LotFrontage"   "LotArea"       "Street"       
@@ -26,3 +26,211 @@ Test Data:  1,460(all) 1,205(1Fam)
 [71] "PoolArea"      "PoolQC"        "Fence"         "MiscFeature"   "MiscVal"      
 [76] "MoSold"        "YrSold"        "SaleType"      "SaleCondition" "SalePrice" 
 
+
+3. FEATURE REMOVAL
+
+train$Id <- NULL
+
+---
+
+table(train$Alley)
+
+Grvl Pave 
+  44   19 
+
+train$Alley <-NULL
+
+---
+> table(train$BsmtFinType2)
+
+ ALQ  BLQ  GLQ  LwQ  Rec  Unf 
+  19   29    8   41   48 1053 
+
+train$BsmtFinType2 <- NULL
+
+---
+> table(train$Condition2)
+
+Feedr  Norm  PosA  PosN  RRNn 
+    6  1209     1     2     2 
+> train$Condition2 <- NULL
+
+---
+> table(train$MiscFeature)
+
+Gar2 Othr Shed TenC 
+   1    1   46    1 
+> train$MiscFeature <- NULL
+
+---
+
+> hist(train$MiscVal)
+> train$MiscVal <- NULL
+
+---
+
+> table(train$RoofMatl)
+
+ClyTile CompShg Membran   Metal Tar&Grv 
+      1    1196       1       1      10 
+WdShake WdShngl 
+      5       6 
+> train$RoofMatl <- NULL
+
+---
+
+> table(train$ExterCond)
+
+  Ex   Fa   Gd   Po   TA 
+   3   20  135    1 1061 
+
+> plot(train$ExterCond, train$SalePrice, main="Exterior Condition Vs. Price")
+> train$ExterCond <- NULL
+
+---
+
+> plot(train$BsmtFinSF2, train$SalePrice, main="Bsmt Finish SqFt 2 Vs. Price")
+> train$BsmtFinSF2 <- NULL
+
+---
+
+> table(train$Heating)
+
+Floor  GasA  GasW  Grav  OthW  Wall 
+    1  1195    15     6     2     1 
+> train$Heating <- NULL
+
+---
+
+> table(train$CentralAir)
+
+   N    Y 
+  68 1152 
+> train$CentralAir <- NULL
+
+---
+
+> table(train$Electrical)
+
+FuseA FuseF FuseP   Mix SBrkr 
+   84    22     1     1  1111 
+> train$Electrical <- NULL
+
+---
+
+> plot(train$LowQualFinSF, train$SalePrice, main="Low Quality SqFt Vs. Price")
+> train$LowQualFinSF <- NULL
+
+---
+
+> plot(train$Fireplaces, train$SalePrice, main="Fireplace # Vs. Price")
+> train$Fireplaces <- NULL
+
+---
+
+> table(train$BsmtHalfBath)
+
+   0    1 
+1149   71 
+> train$BsmtHalfBath <- NULL
+
+---
+
+> plot(train$FireplaceQu, train$SalePrice, main="Garage Quality Vs. Price")
+> train$GarageQual <- NULL
+
+---
+
+> plot(train$GarageCond, train$SalePrice, main="Garage Condition Vs. Price")
+> train$GarageCond <- NULL
+
+---
+
+> table(train$PavedDrive)
+
+   N    P    Y 
+  72   29 1119 
+> train$PavedDrive <- NULL
+
+---
+
+> plot(train$WoodDeckSF, train$SalePrice, main="Wood Deck SqFt Vs. Price")
+> train$WoodDeckSF <- NULL
+
+---
+
+> plot(train$OpenPorchSF, train$SalePrice, main="Open Porch SqFt Vs. Price")
+> train$OpenPorchSF <- NULL
+
+---
+
+plot(train$EnclosedPorch, train$SalePrice, main="Enclosed Porch SqFt Vs. Price")
+> train$EnclosedPorch <- NULL
+
+---
+
+> plot(train$X3SsnPorch, train$SalePrice, main="Three Season Porch SqFt Vs. Price")
+> train$X3SsnPorch <- NULL
+
+---
+
+> plot(train$ScreenPorch, train$SalePrice, main="Screen Porch SqFt Vs. Price")
+> train$ScreenPorch <- NULL
+
+---
+
+> plot(train$PoolArea, train$SalePrice, main="Pool Area Vs. Price")
+> train$PoolArea <- NULL
+
+---
+
+> table(train$PoolQC)
+
+Ex Fa Gd 
+ 2  2  3 
+> train$PoolQC <- NULL
+
+---
+
+> table(train$SaleType)
+
+  COD   Con ConLD ConLI ConLw   CWD 
+   34     1     5     4     4     3 
+  New   Oth    WD 
+  104     2  1063 
+> train$SaleType <- NULL
+
+---
+
+> table(train$Street)
+
+Grvl Pave 
+   3 1217 
+> train$Street <- NULL
+
+---
+
+> plot(train$LandContour, train$SalePrice, main="Land Contour Vs. Price")
+> train$LandContour <- NULL
+
+---
+
+> table(train$Utilities)
+
+AllPub NoSeWa 
+  1219      1 
+> train$Utilities <- NULL
+
+---
+
+> table(train$BldgType)
+
+1Fam 
+1220 
+> train$BldgType <- NULL
+
+
+---
+
+> plot(train$BsmtUnfSF, train$SalePrice, main="Land Slope Vs. Price")
+> train$BsmtUnfSF <- NULL
