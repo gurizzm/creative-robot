@@ -1,3 +1,20 @@
+LIBRARIES
+
+Library(MASS)
+Library(leaps)
+Library(ggplot2)
+library(data.table)
+library(FeatureHashing)
+library(Matrix)
+library(caret)
+library(dplyr)
+library(pROC)
+library(stringr)
+library(dummies)
+library(Metrics)
+library(kernlab)
+library(mlbench)
+
 Process of Testing stage
 
 1. Initial Removal of all rows from train and test data that are not "1Fam" building types.
