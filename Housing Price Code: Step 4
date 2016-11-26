@@ -1,1 +1,74 @@
+16. NEW LINEAR MODEL WITH STEPBACK FEATURES
 
+lin_model_stepback<- lm(SalePrice ~ LotFrontage + LotArea + OverallQual + 
+OverallCond + YearBuilt + YearRemodAdd + MasVnrArea + BsmtFinSF1 + TotalBsmtSF + 
+X1stFlrSF + GrLivArea + HalfBath + BedroomAbvGr + KitchenAbvGr + GarageCars + 
+lotreg + proxcond1 + house_style_level + roofshed_hip + exterior_1 + exterior_2 + 
+masontype + exterior_qual + found_conc + Basement_cond + kitchqual + functhouse + 
+typegarage + condfence + sale, data=training)
+
+summary(lin_model_stepback)
+
+Call:
+lm(formula = SalePrice ~ LotFrontage + LotArea + OverallQual + 
+    OverallCond + YearBuilt + YearRemodAdd + MasVnrArea + BsmtFinSF1 + 
+    TotalBsmtSF + X1stFlrSF + GrLivArea + HalfBath + BedroomAbvGr + 
+    KitchenAbvGr + GarageCars + lotreg + proxcond1 + house_style_level + 
+    roofshed_hip + exterior_1 + exterior_2 + masontype + exterior_qual + 
+    found_conc + Basement_cond + kitchqual + functhouse + typegarage + 
+    condfence + condsale, data = training)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-143448  -14997       0   14584  152891 
+
+Coefficients:
+                    Estimate Std. Error t value Pr(>|t|)    
+(Intercept)       -1.638e+05  3.635e+05  -0.451 0.652446    
+LotFrontage        1.409e+02  4.354e+01   3.235 0.001308 ** 
+LotArea            1.174e+00  3.182e-01   3.690 0.000253 ***
+OverallQual        1.054e+04  2.373e+03   4.443 1.13e-05 ***
+OverallCond        7.155e+03  2.057e+03   3.478 0.000556 ***
+YearBuilt          3.264e+02  2.146e+02   1.521 0.128953    
+YearRemodAdd      -2.502e+02  1.546e+02  -1.618 0.106287    
+MasVnrArea         2.833e+01  1.014e+01   2.792 0.005467 ** 
+BsmtFinSF1         2.857e+01  3.641e+00   7.847 3.38e-14 ***
+TotalBsmtSF        3.157e+01  7.844e+00   4.024 6.74e-05 ***
+X1stFlrSF         -2.343e+01  1.048e+01  -2.236 0.025885 *  
+GrLivArea          1.041e+02  7.790e+00  13.362  < 2e-16 ***
+HalfBath          -8.750e+03  4.449e+03  -1.967 0.049846 *  
+BedroomAbvGr      -1.166e+04  2.815e+03  -4.141 4.16e-05 ***
+KitchenAbvGr      -1.018e+05  3.350e+04  -3.037 0.002532 ** 
+GarageCars         6.809e+03  3.212e+03   2.120 0.034585 *  
+lotreg            -5.202e+03  3.039e+03  -1.712 0.087614 .  
+proxcond1         -1.558e+04  1.043e+04  -1.494 0.135877    
+house_style_level -1.224e+04  5.966e+03  -2.051 0.040892 *  
+roofshed_hip       1.099e+04  3.604e+03   3.050 0.002433 ** 
+exterior_1        -1.261e+04  8.369e+03  -1.507 0.132618    
+exterior_2         1.276e+04  8.306e+03   1.536 0.125279    
+masontype         -8.429e+03  3.840e+03  -2.195 0.028706 *  
+exterior_qual      6.526e+03  4.177e+03   1.562 0.118939    
+found_conc         1.309e+04  5.605e+03   2.336 0.019951 *  
+Basement_cond     -9.919e+03  4.592e+03  -2.160 0.031308 *  
+kitchqual          8.426e+03  3.570e+03   2.360 0.018703 *  
+functhouse         1.981e+04  7.783e+03   2.545 0.011275 *  
+typegarage        -8.553e+03  4.602e+03  -1.859 0.063739 .  
+condfence         -3.965e+03  1.713e+03  -2.314 0.021119 *  
+condsale           1.955e+04  3.889e+03   5.028 7.27e-07 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 29240 on 432 degrees of freedom
+Multiple R-squared:  0.8987,	Adjusted R-squared:  0.8916 
+F-statistic: 127.7 on 30 and 432 DF,  p-value: < 2.2e-16
+
+17. RMSE (lin_model_stepback)
+
+prediction <- predict(lin_model_stepback, testing, type="response")
+model_output <- cbind(testing, prediction)
+ 
+     model_output$log_prediction <- log(model_output$prediction)
+     model_output$log_SalePrice <- log(model_output$SalePrice)
+  
+RMSE(model_output$log_SalePrice,model_output$log_prediction)
+[1] 0.1687358
