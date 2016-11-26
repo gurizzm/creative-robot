@@ -1,1 +1,87 @@
+12. PARTITION AND LINEAR MODEL OF CURRENT FEATURE SET
 
+outcome <- train$SalePrice
+
+partition <- createDataPartition(y=outcome,
+                                 p=.5,
+                                 list=F)
+training <- train[partition,]
+testing <- train[-partition,]
+
+lin_model_whole <- lm(SalePrice ~ ., data=training)
+summary(lin_model_whole)
+
+Call:
+lm(formula = SalePrice ~ ., data = training)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-150906  -14591    -592   14920  149053 
+
+Coefficients:
+                    Estimate Std. Error t value Pr(>|t|)    
+(Intercept)        1.817e+06  2.287e+06   0.794 0.427395    
+LotFrontage        1.245e+02  4.494e+01   2.770 0.005851 ** 
+LotArea            1.096e+00  3.452e-01   3.174 0.001613 ** 
+OverallQual        1.011e+04  2.520e+03   4.011 7.17e-05 ***
+OverallCond        7.540e+03  2.161e+03   3.489 0.000537 ***
+YearBuilt          3.689e+02  2.599e+02   1.420 0.156413    
+YearRemodAdd      -2.661e+02  1.619e+02  -1.643 0.101061    
+MasVnrArea         2.677e+01  1.043e+01   2.567 0.010599 *  
+BsmtFinSF1         2.804e+01  4.784e+00   5.861 9.36e-09 ***
+TotalBsmtSF        3.198e+01  8.430e+00   3.793 0.000171 ***
+X1stFlrSF         -2.513e+01  1.133e+01  -2.218 0.027088 *  
+GrLivArea          1.040e+02  9.301e+00  11.179  < 2e-16 ***
+BsmtFullBath       3.522e+01  4.060e+03   0.009 0.993081    
+FullBath          -3.716e+03  5.361e+03  -0.693 0.488622    
+HalfBath          -1.004e+04  4.960e+03  -2.024 0.043660 *  
+BedroomAbvGr      -1.314e+04  3.205e+03  -4.100 4.98e-05 ***
+KitchenAbvGr      -9.931e+04  3.540e+04  -2.805 0.005261 ** 
+TotRmsAbvGrd       1.664e+03  1.999e+03   0.832 0.405873    
+GarageYrBlt       -2.775e+00  7.137e+00  -0.389 0.697650    
+GarageCars         7.384e+03  5.147e+03   1.435 0.152173    
+GarageArea         2.504e+00  1.662e+01   0.151 0.880325    
+MoSold            -3.118e+02  5.498e+02  -0.567 0.570890    
+YrSold            -1.014e+03  1.115e+03  -0.910 0.363543    
+lotreg            -4.848e+03  3.193e+03  -1.518 0.129729    
+config             1.450e+03  3.531e+03   0.411 0.681563    
+slopetype          5.263e+03  7.857e+03   0.670 0.503343    
+neighpricerank    -7.495e+02  2.764e+03  -0.271 0.786371    
+proxcond1         -1.676e+04  1.068e+04  -1.570 0.117253    
+house_style_level -1.072e+04  6.245e+03  -1.716 0.086909 .  
+roofshed_hip       1.117e+04  3.752e+03   2.979 0.003066 ** 
+exterior_1        -1.242e+04  8.761e+03  -1.417 0.157109    
+exterior_2         1.192e+04  8.571e+03   1.390 0.165195    
+masontype         -7.100e+03  3.986e+03  -1.781 0.075646 .  
+exterior_qual      6.560e+03  4.295e+03   1.527 0.127457    
+found_conc         1.548e+04  5.884e+03   2.631 0.008831 ** 
+Basement_qual      4.373e+03  3.792e+03   1.153 0.249487    
+Basement_cond     -1.114e+04  5.055e+03  -2.203 0.028135 *  
+Basement_Exp       1.582e+03  1.519e+03   1.042 0.298016    
+Basement_Finish1  -1.721e+03  1.247e+03  -1.380 0.168277    
+heatqual          -9.353e+02  2.287e+03  -0.409 0.682769    
+kitchqual          8.747e+03  3.694e+03   2.368 0.018363 *  
+functhouse         1.920e+04  8.120e+03   2.365 0.018507 *  
+firequal          -3.310e+02  1.403e+03  -0.236 0.813583    
+typegarage        -6.378e+03  5.395e+03  -1.182 0.237763    
+finishgarage      -3.671e+03  4.210e+03  -0.872 0.383658    
+condfence         -4.051e+03  1.790e+03  -2.263 0.024140 *  
+condsale           1.852e+04  4.066e+03   4.556 6.88e-06 ***
+zoning             1.390e+03  4.452e+03   0.312 0.755089    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 29500 on 415 degrees of freedom
+Multiple R-squared:  0.9009,	Adjusted R-squared:  0.8897 
+F-statistic: 80.27 on 47 and 415 DF,  p-value: < 2.2e-16
+
+13. RMSE VALUE (lin_model_whole)
+
+prediction <- predict(lin_model_whole, testing, type="response")
+model_output <- cbind(testing, prediction)
+ 
+model_output$log_prediction <- log(model_output$prediction)
+model_output$log_SalePrice <- log(model_output$SalePrice)
+
+RMSE(model_output$log_SalePrice,model_output$log_prediction)
+[1] 0.1735829
