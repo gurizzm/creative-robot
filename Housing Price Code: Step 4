@@ -5,7 +5,7 @@ OverallCond + YearBuilt + YearRemodAdd + MasVnrArea + BsmtFinSF1 + TotalBsmtSF +
 X1stFlrSF + GrLivArea + HalfBath + BedroomAbvGr + KitchenAbvGr + GarageCars + 
 lotreg + proxcond1 + house_style_level + roofshed_hip + exterior_1 + exterior_2 + 
 masontype + exterior_qual + found_conc + Basement_cond + kitchqual + functhouse + 
-typegarage + condfence + sale, data=training)
+typegarage + condfence + condsale, data=training)
 
 summary(lin_model_stepback)
 
