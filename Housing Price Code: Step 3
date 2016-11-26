@@ -1,1 +1,68 @@
+14. USE "LEAP" VISUAL AID FOR REMAINING FEATURES
 
+leaps<- regsubsets(SalePrice ~ LotFrontage + LotArea + OverallQual + 
++                        OverallCond + YearBuilt + YearRemodAdd + MasVnrArea + 
+                         BsmtFinSF1 + TotalBsmtSF + X1stFlrSF + GrLivArea + 
+                         HalfBath + BedroomAbvGr + KitchenAbvGr + GarageCars + 
+                         lotreg + proxcond1 + house_style_level + roofshed_hip + 
+                         exterior_1 + exterior_2 + masontype + exterior_qual + 
+                         found_conc + Basement_cond + kitchqual + functhouse + 
+                         typegarage + condfence + condsale, data = training, nbest=10)
+plot(leaps,scale="r2")
+
+15. STEPWISE FUNCTION - BACKWARDS PROGRESSION
+
+stepback<- lm(SalePrice ~ LotFrontage + LotArea + OverallQual + OverallCond + 
++                   YearBuilt + YearRemodAdd + MasVnrArea + BsmtFinSF1 + TotalBsmtSF + 
++                   X1stFlrSF + GrLivArea + BsmtFullBath + FullBath + 
++                   HalfBath + BedroomAbvGr + KitchenAbvGr + TotRmsAbvGrd + GarageYrBlt + 
++                   GarageCars + GarageArea + MoSold + YrSold + lotreg + config + 
++                   slopetype + neighpricerank + proxcond1 + house_style_level + 
++                   roofshed_hip + exterior_1 + exterior_2 + masontype + exterior_qual + 
++                   found_conc + Basement_qual + Basement_cond + Basement_Exp + 
++                   Basement_Finish1 + heatqual + kitchqual + functhouse + firequal + 
++                   typegarage + finishgarage + condfence + condsale + zoning, data=training)
+
+stepfit<- stepAIC(stepback, direction= "backward")
+
+Start:  AIC=9552.28
+SalePrice ~ LotFrontage + LotArea + OverallQual + OverallCond + 
+    YearBuilt + YearRemodAdd + MasVnrArea + BsmtFinSF1 + TotalBsmtSF + 
+    X1stFlrSF + GrLivArea + HalfBath + BedroomAbvGr + KitchenAbvGr + 
+    GarageCars + lotreg + proxcond1 + house_style_level + roofshed_hip + 
+    exterior_1 + exterior_2 + masontype + exterior_qual + found_conc + 
+    Basement_cond + kitchqual + functhouse + typegarage + condfence + 
+    condsale
+
+                    Df  Sum of Sq        RSS    AIC
+<none>                            3.6938e+11 9552.3
+- proxcond1          1 1.9088e+09 3.7129e+11 9552.7
+- exterior_1         1 1.9411e+09 3.7132e+11 9552.7
+- YearBuilt          1 1.9785e+09 3.7136e+11 9552.8
+- exterior_2         1 2.0172e+09 3.7140e+11 9552.8
+- exterior_qual      1 2.0871e+09 3.7147e+11 9552.9
+- YearRemodAdd       1 2.2398e+09 3.7162e+11 9553.1
+- lotreg             1 2.5061e+09 3.7189e+11 9553.4
+- typegarage         1 2.9542e+09 3.7234e+11 9554.0
+- HalfBath           1 3.3076e+09 3.7269e+11 9554.4
+- house_style_level  1 3.5961e+09 3.7298e+11 9554.8
+- GarageCars         1 3.8426e+09 3.7323e+11 9555.1
+- Basement_cond      1 3.9900e+09 3.7337e+11 9555.3
+- masontype          1 4.1191e+09 3.7350e+11 9555.4
+- X1stFlrSF          1 4.2737e+09 3.7366e+11 9555.6
+- condfence          1 4.5797e+09 3.7396e+11 9556.0
+- found_conc         1 4.6657e+09 3.7405e+11 9556.1
+- kitchqual          1 4.7636e+09 3.7415e+11 9556.2
+- functhouse         1 5.5382e+09 3.7492e+11 9557.2
+- MasVnrArea         1 6.6665e+09 3.7605e+11 9558.6
+- KitchenAbvGr       1 7.8881e+09 3.7727e+11 9560.1
+- roofshed_hip       1 7.9516e+09 3.7734e+11 9560.1
+- LotFrontage        1 8.9510e+09 3.7833e+11 9561.4
+- OverallCond        1 1.0345e+10 3.7973e+11 9563.1
+- LotArea            1 1.1642e+10 3.8103e+11 9564.7
+- TotalBsmtSF        1 1.3848e+10 3.8323e+11 9567.3
+- BedroomAbvGr       1 1.4662e+10 3.8405e+11 9568.3
+- OverallQual        1 1.6882e+10 3.8627e+11 9571.0
+- condsale           1 2.1617e+10 3.9100e+11 9576.6
+- BsmtFinSF1         1 5.2653e+10 4.2204e+11 9612.0
+- GrLivArea          1 1.5266e+11 5.2204e+11 9710.4
