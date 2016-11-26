@@ -532,4 +532,47 @@ names(train)
 
 9. REMOVAL OF CHARACTER BASED FEATURES FROM TRAIN
 
+train$MSZoning <- NULL
+train$LotShape <- NULL
+train$LotConfig <- NULL
+train$LandSlope <- NULL
+train$Neighborhood <- NULL
+train$Condition1 <- NULL
+train$HouseStyle <- NULL
+train$RoofStyle <- NULL
+train$Exterior1st <- NULL
+train$Exterior2nd <- NULL
+train$MasVnrType <- NULL
+train$ExterQual <- NULL
+train$Foundation <- NULL
+train$BsmtQual <- NULL
+train$BsmtCond <- NULL
+train$BsmtExposure <- NULL
+train$BsmtFinType1 <- NULL
+train$BsmtHeatingQC <- NULL
+train$HeatingQC <- NULL
+train$KitchenQual <- NULL
+train$Functional <- NULL
+train$FireplaceQu <- NULL
+train$GarageType <- NULL
+train$GarageFinish <- NULL
+train$Fence <- NULL
+train$SaleCondition <- NULL
+train$X2ndFlrSF <- NULL
+train$MSSubClass <- NULL
 
+10. UPDATED NUMERIC BASED FEATURE LIST
+
+names(train)
+ [1] "LotFrontage"       "LotArea"           "OverallQual"       "OverallCond"      
+ [5] "YearBuilt"         "YearRemodAdd"      "MasVnrArea"        "BsmtFinSF1"       
+ [9] "TotalBsmtSF"       "X1stFlrSF"         "GrLivArea"         "BsmtFullBath"     
+[13] "FullBath"          "HalfBath"          "BedroomAbvGr"      "KitchenAbvGr"     
+[17] "TotRmsAbvGrd"      "GarageYrBlt"       "GarageCars"        "GarageArea"       
+[21] "MoSold"            "YrSold"            "SalePrice"         "lotreg"           
+[25] "config"            "slopetype"         "neighpricerank"    "proxcond1"        
+[29] "house_style_level" "roofshed_hip"      "exterior_1"        "exterior_2"       
+[33] "masontype"         "exterior_qual"     "found_conc"        "Basement_qual"    
+[37] "Basement_cond"     "Basement_Exp"      "Basement_Finish1"  "heatqual"         
+[41] "kitchqual"         "functhouse"        "firequal"          "typegarage"       
+[45] "finishgarage"      "condfence"         "condsale"          "zoning"       
