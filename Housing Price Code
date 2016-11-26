@@ -1,0 +1,28 @@
+Process of Testing stage
+
+1. Initial Removal of all rows from train and test data that are not "1Fam" building types.
+ - Only wanted data on Single-Family Detached properties
+ 
+Train Data: 1,460(all) 1,220(1Fam)
+Test Data:  1,460(all) 1,205(1Fam)
+
+2. List of All Features
+
+> names(train)
+ [1] "MSSubClass"    "MSZoning"      "LotFrontage"   "LotArea"       "Street"       
+ [6] "Alley"         "LotShape"      "LandContour"   "Utilities"     "LotConfig"    
+[11] "LandSlope"     "Neighborhood"  "Condition1"    "Condition2"    "BldgType"     
+[16] "HouseStyle"    "OverallQual"   "OverallCond"   "YearBuilt"     "YearRemodAdd" 
+[21] "RoofStyle"     "RoofMatl"      "Exterior1st"   "Exterior2nd"   "MasVnrType"   
+[26] "MasVnrArea"    "ExterQual"     "ExterCond"     "Foundation"    "BsmtQual"     
+[31] "BsmtCond"      "BsmtExposure"  "BsmtFinType1"  "BsmtFinSF1"    "BsmtFinType2" 
+[36] "BsmtFinSF2"    "BsmtUnfSF"     "TotalBsmtSF"   "Heating"       "HeatingQC"    
+[41] "CentralAir"    "Electrical"    "X1stFlrSF"     "X2ndFlrSF"     "LowQualFinSF" 
+[46] "GrLivArea"     "BsmtFullBath"  "BsmtHalfBath"  "FullBath"      "HalfBath"     
+[51] "BedroomAbvGr"  "KitchenAbvGr"  "KitchenQual"   "TotRmsAbvGrd"  "Functional"   
+[56] "Fireplaces"    "FireplaceQu"   "GarageType"    "GarageYrBlt"   "GarageFinish" 
+[61] "GarageCars"    "GarageArea"    "GarageQual"    "GarageCond"    "PavedDrive"   
+[66] "WoodDeckSF"    "OpenPorchSF"   "EnclosedPorch" "X3SsnPorch"    "ScreenPorch"  
+[71] "PoolArea"      "PoolQC"        "Fence"         "MiscFeature"   "MiscVal"      
+[76] "MoSold"        "YrSold"        "SaleType"      "SaleCondition" "SalePrice" 
+
