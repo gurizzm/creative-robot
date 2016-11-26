@@ -234,3 +234,300 @@ AllPub NoSeWa
 
 > plot(train$BsmtUnfSF, train$SalePrice, main="Land Slope Vs. Price")
 > train$BsmtUnfSF <- NULL
+
+4. UPDATED FEATURE LIST (50 Remaining)
+
+> names(train)
+ [1] "MSSubClass"    "MSZoning"      "LotFrontage"   "LotArea"       "LotShape"     
+ [6] "LotConfig"     "LandSlope"     "Neighborhood"  "Condition1"    "HouseStyle"   
+[11] "OverallQual"   "OverallCond"   "YearBuilt"     "YearRemodAdd"  "RoofStyle"    
+[16] "Exterior1st"   "Exterior2nd"   "MasVnrType"    "MasVnrArea"    "ExterQual"    
+[21] "Foundation"    "BsmtQual"      "BsmtCond"      "BsmtExposure"  "BsmtFinType1" 
+[26] "BsmtFinSF1"    "TotalBsmtSF"   "HeatingQC"     "X1stFlrSF"     "X2ndFlrSF"    
+[31] "GrLivArea"     "BsmtFullBath"  "FullBath"      "HalfBath"      "BedroomAbvGr" 
+[36] "KitchenAbvGr"  "KitchenQual"   "TotRmsAbvGrd"  "Functional"    "FireplaceQu"  
+[41] "GarageType"    "GarageYrBlt"   "GarageFinish"  "GarageCars"    "GarageArea"   
+[46] "Fence"         "MoSold"        "YrSold"        "SaleCondition" "SalePrice" 
+
+5. CONVERTING NUMERIC NA TO 0
+
+> train$GarageYrBlt[is.na(train$GarageYrBlt)] <- 0
+> train$MasVnrArea[is.na(train$MasVnrArea)] <- 0
+> train$LotFrontage[is.na(train$LotFrontage)] <- 0
+
+6. CONVERTING CHAR VALUES TO NUMERIC
+
+MSZoning
+> train$zoning[train$MSZoning == "FV"] <- 5
+> train$zoning[train$MSZoning == "RL"] <- 4
+> train$zoning[train$MSZoning == "RH"] <- 3
+> train$zoning[train$MSZoning == "RM"] <- 2
+> train$zoning[train$MSZoning == "C (all)"] <- 1
+
+---
+
+LotShape
+#train$lotreg
+> train$lotreg[train$LotShape!= "Reg"] <- 0
+> train$lotreg[train$LotShape== "Reg"] <- 1
+
+---
+
+LotConfig
+#train$config
+> train$config[train$LotConfig %in% c("Corner", "FR2")] <- 1
+> train$config[!train$LotConfig %in% c("Corner", "FR2")] <- 0
+
+---
+
+LandSlope
+train$slopetype
+> train$slopetype[train$LandSlope== "Gtl"] <- 1
+> train$slopetype[train$LandSlope!= "Gtl"] <- 0
+
+---
+
+Neighbourhood
+
+neighprice <- summarize(group_by(train, Neighborhood),
++                         mean(SalePrice, na.rm=T))
+> 
+> neighprice_low <- filter(neighprice, neighprice$'mean(SalePrice, na.rm = T)'<150000)
+> neighprice_mid <- filter(neighprice, neighprice$'mean(SalePrice, na.rm = T)'>=150000 & neighprice$'mean(SalePrice, na.rm = T)'<200000)
+> neighprice_high <- filter(neighprice, neighprice$'mean(SalePrice, na.rm = T)'>=200000)
+> train$neighpricerank[train$Neighborhood %in% neighprice_low$Neighborhood] <- 1
+> train$neighpricerank[train$Neighborhood %in% neighprice_mid$Neighborhood] <- 2
+> train$neighpricerank[train$Neighborhood %in% neighprice_high$Neighborhood] <- 3
+
+---
+Condition1
+
+train$proxcond1[train$Condition1 %in% c("PosA", "PosN", "RRNn")] <- 1
+> train$proxcond1[!train$Condition1 %in% c("PosA", "PosN", "RRNn")] <- 0
+
+---
+
+HouseStyle
+
+housestyle_price <- summarize(group_by(train, HouseStyle),
+          mean(SalePrice, na.rm=T))
+
+housestyle_lo <- filter(housestyle_price, housestyle_price$`mean(SalePrice, na.rm = T)` < 150000)
+housestyle_med <- filter(housestyle_price, housestyle_price$`mean(SalePrice, na.rm = T)` < 200000 &
+                          housestyle_price$`mean(SalePrice, na.rm = T)` >= 150000 )
+housestyle_hi <- filter(housestyle_price, housestyle_price$`mean(SalePrice, na.rm = T)` >= 200000)
+
+train$house_style_level[train$HouseStyle %in% housestyle_lo$HouseStyle] <- 1
+train$house_style_level[train$HouseStyle %in% housestyle_med$HouseStyle] <- 2
+train$house_style_level[train$HouseStyle %in% housestyle_hi$HouseStyle] <- 3
+
+---
+
+RoofStyle
+
+> train$roofshed_hip[train$RoofStyle %in% c("Shed", "Hip")] <- 1
+> train$roofshed_hip[!train$RoofStyle %in% c("Shed", "Hip")] <- 0
+
+---
+
+Exterior 1
+
+price <- summarize(group_by(train, Exterior1st),
+          mean(SalePrice, na.rm=T))
+
+matl_lo_1 <- filter(price, price$`mean(SalePrice, na.rm = T)` < 150000)
+matl_med_1<- filter(price, price$`mean(SalePrice, na.rm = T)` < 200000 &
+                          price$`mean(SalePrice, na.rm = T)` >= 150000 )
+matl_hi_1 <- filter(price, price$`mean(SalePrice, na.rm = T)` >= 200000)
+
+train$exterior_1[train$Exterior1st %in% matl_lo_1$Exterior1st] <- 1
+train$exterior_1[train$Exterior1st %in% matl_med_1$Exterior1st] <- 2
+train$exterior_1[train$Exterior1st %in% matl_hi_1$Exterior1st] <- 3
+
+---
+
+Exterior 2
+
+price <- summarize(group_by(train, Exterior2nd),
+          mean(SalePrice, na.rm=T))
+
+matl_lo_2 <- filter(price, price$`mean(SalePrice, na.rm = T)` < 150000)
+matl_med_2<- filter(price, price$`mean(SalePrice, na.rm = T)` < 200000 &
+                          price$`mean(SalePrice, na.rm = T)` >= 150000 )
+matl_hi_2 <- filter(price, price$`mean(SalePrice, na.rm = T)` >= 200000)
+
+train$exterior_2[train$Exterior2nd %in% matl_lo_2$Exterior2nd] <- 1
+train$exterior_2[train$Exterior2nd %in% matl_med_2$Exterior2nd] <- 2
+train$exterior_2[train$Exterior2nd %in% matl_hi_2$Exterior2nd] <- 3
+
+---
+
+MasVarType
+
+
+> train$masontype[train$MasVnrType %in% c("Stone", "BrkFace") | is.na(train$MasVnrType)] <- 1
+> train$masontype[!train$MasVnrType %in% c("Stone", "BrkFace") & !is.na(train$MasVnrType)] <- 0
+
+---
+
+ExterQual
+
+> price <- summarize(group_by(train, ExterQual),
++                      +                    mean(SalePrice, na.rm=T))
+> 
+> train$exterior_qual[train$ExterQual == "Ex"] <- 4
+> train$exterior_qual[train$ExterQual == "Gd"] <- 3
+> train$exterior_qual[train$ExterQual == "TA"] <- 2
+> train$exterior_qual[train$ExterQual == "Fa"] <- 1
+
+---
+
+Foundation
+
+train$found_conc[train$Foundation == "PConc"] <- 1
+> train$found_conc[train$Foundation != "PConc"] <- 0
+
+---
+
+BsmtQual
+
+train$Basement_qual[train$BsmtQual == "Ex"] <- 5
+> train$Basement_qual[train$BsmtQual == "Gd"] <- 4
+> train$Basement_qual[train$BsmtQual == "TA"] <- 3
+> train$Basement_qual[train$BsmtQual == "Fa"] <- 2
+> train$Basement_qual[is.na(train$BsmtQual)] <- 1
+
+---
+
+BsmtCond
+
+train$Basement_cond[train$BsmtCond == "Gd"] <- 5
+> train$Basement_cond[train$BsmtCond == "TA"] <- 4
+> train$Basement_cond[train$BsmtCond == "Fa"] <- 3
+> train$Basement_cond[train$BsmtCond == "Po"] <- 1
+> train$Basement_cond[is.na(train$BsmtCond)] <- 2
+
+---
+
+BsmtExposure
+
+train$Basement_Exp[train$BsmtExposure == "Gd"] <- 7
+> train$Basement_Exp[train$BsmtExposure == "Av"] <- 6
+> train$Basement_Exp[train$BsmtExposure == "Gd"] <- 5
+> train$Basement_Exp[train$BsmtExposure == "Av"] <- 4
+> train$Basement_Exp[train$BsmtExposure == "Mn"] <- 3
+> train$Basement_Exp[train$BsmtExposure == "No"] <- 2
+> train$Basement_Exp[is.na(train$BsmtExposure)] <- 1
+
+---
+
+BmstFinType1
+
+train$Basement_Finish1[train$BsmtFinType1 == "GLQ"] <- 7
+> train$Basement_Finish1[train$BsmtFinType1 == "Unf"] <- 6
+> train$Basement_Finish1[train$BsmtFinType1 == "ALQ"] <- 5
+> train$Basement_Finish1[train$BsmtFinType1 == "LwQ"] <- 4
+> train$Basement_Finish1[train$BsmtFinType1 == "BLQ"] <- 3
+> train$Basement_Finish1[train$BsmtFinType1 == "Rec"] <- 2
+> train$Basement_Finish1[is.na(train$BsmtFinType1)] <- 1
+
+---
+
+HeatingQC
+
+train$heatqual[train$HeatingQC == "Ex"] <- 5
+> train$heatqual[train$HeatingQC == "Gd"] <- 4
+> train$heatqual[train$HeatingQC == "TA"] <- 3
+> train$heatqual[train$HeatingQC == "Fa"] <- 2
+> train$heatqual[train$HeatingQC == "Po"] <- 1
+
+--
+
+KitchenQual
+
+train$kitchqual[train$KitchenQual == "Ex"] <- 4
+> train$kitchqual[train$KitchenQual == "Gd"] <- 3
+> train$kitchqual[train$KitchenQual == "TA"] <- 2
+> train$kitchqual[train$KitchenQual == "Fa"] <- 1
+
+---
+
+Functional
+
+train$functhouse[train$Functional %in% c("Typ", "Mod")] <- 1
+> train$functhouse[!train$Functional %in% c("Typ", "Mod")] <- 0
+
+---
+
+FireplaceQu
+
+train$firequal[train$FireplaceQu == "Ex"] <- 6
+> train$firequal[train$FireplaceQu == "Gd"] <- 5
+> train$firequal[train$FireplaceQu == "Fa"] <- 4
+> train$firequal[train$FireplaceQu == "TA"] <- 3
+> train$firequal[is.na(train$FireplaceQu)] <- 2
+> train$firequal[train$FireplaceQu == "Po"] <- 1
+
+
+---
+
+GarageType
+
+train$typegarage[train$GarageType %in% c("Attchd", "BuiltIn")] <- 1
+> train$typegarage[!train$GarageType %in% c("Attchd", "BuiltIn")] <- 0
+
+---
+
+GarageFinish
+
+train$finishgarage[train$GarageFinish %in% c("Fin", "RFn")] <- 1
+> train$finishgarage[!train$GarageFinish %in% c("Fin", "RFn")] <- 0
+
+---
+
+Fence
+
+train$condfence[is.na(train$Fence)] <- 5
+> train$condfence[train$Fence == "GdPrv"] <- 4
+> train$condfence[train$Fence == "MnPrv"] <- 3
+> train$condfence[train$Fence == "GdWo"] <- 2
+> train$condfence[train$Fence == "MnWw"] <- 1
+
+---
+
+SaleCondition
+
+train$condsale[train$SaleCondition %in% c("Partial")] <- 4
+> train$condsale[train$SaleCondition %in% c("Alloca", "Normal")] <- 3
+> train$condsale[train$SaleCondition %in% c("Abnorml", "Family")] <- 2
+> train$condsale[train$SaleCondition %in% "AdjLand"] <- 1
+
+7. CHANGING NUMERICAL FIGURE TO 2 DIGITS
+
+train$MSSubClass[train$MSSubClass == "120"] <- 10
+
+8. NEW SET OF FEATURES
+
+[1] "MSSubClass"        "MSZoning"          "LotFrontage"       "LotArea"          
+ [5] "LotShape"          "LotConfig"         "LandSlope"         "Neighborhood"     
+ [9] "Condition1"        "HouseStyle"        "OverallQual"       "OverallCond"      
+[13] "YearBuilt"         "YearRemodAdd"      "RoofStyle"         "Exterior1st"      
+[17] "Exterior2nd"       "MasVnrType"        "MasVnrArea"        "ExterQual"        
+[21] "Foundation"        "BsmtQual"          "BsmtCond"          "BsmtExposure"     
+[25] "BsmtFinType1"      "BsmtFinSF1"        "TotalBsmtSF"       "HeatingQC"        
+[29] "X1stFlrSF"         "X2ndFlrSF"         "GrLivArea"         "BsmtFullBath"     
+[33] "FullBath"          "HalfBath"          "BedroomAbvGr"      "KitchenAbvGr"     
+[37] "KitchenQual"       "TotRmsAbvGrd"      "Functional"        "FireplaceQu"      
+[41] "GarageType"        "GarageYrBlt"       "GarageFinish"      "GarageCars"       
+[45] "GarageArea"        "Fence"             "MoSold"            "YrSold"           
+[49] "SaleCondition"     "SalePrice"         "lotreg"            "config"           
+[53] "slopetype"         "neighpricerank"    "proxcond1"         "house_style_level"
+[57] "roofshed_hip"      "exterior_1"        "exterior_2"        "masontype"        
+[61] "exterior_qual"     "found_conc"        "Basement_qual"     "Basement_cond"    
+[65] "Basement_Exp"      "Basement_Finish1"  "heatqual"          "kitchqual"        
+[69] "functhouse"        "firequal"          "typegarage"        "finishgarage"     
+[73] "condfence"         "condsale"  
+
+9. REMOVAL OF CHARACTER BASED FEATURES FROM TRAIN
+
+
